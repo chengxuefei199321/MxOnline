@@ -161,7 +161,6 @@
 {% block custom_js %}
     <script type="text/javascript">
         function add_fav(current_elem, fav_id, fav_type) {
-            alert("hello")
             $.ajax({
                 cache: false,
                 type: "POST",
@@ -180,7 +179,6 @@
                         }
 
                     } else if (data.status == 'success') {
-                        alert("test")
                         current_elem.text(data.msg)
                     }
                 },
