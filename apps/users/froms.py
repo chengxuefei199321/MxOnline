@@ -27,7 +27,9 @@ class ForgetpwdForm(forms.Form):
 
 
 class ModifyPwdForm(forms.Form):
-    '''重置密码'''
+    '''
+    重置密码
+    '''
     password1 = forms.CharField(required=True, min_length=5)
     password2 = forms.CharField(required=True, min_length=5)
 
