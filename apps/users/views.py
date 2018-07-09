@@ -3,20 +3,20 @@
 import json
 
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login,logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from django.views.generic.base import View
 from django.contrib.auth.hashers import make_password
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse
 
-from .models import UserProfile, EmailVerifyRecord,Banner
-from operation.models import UserCourse,UserFavorite,UserMessage
-from organization.models import CourseOrg,Teacher
+from .models import UserProfile, EmailVerifyRecord, Banner
+from operation.models import UserCourse, UserFavorite, UserMessage
+from organization.models import CourseOrg, Teacher
 from courses.models import Course
-from .froms import LoginForm, RegisterForm, ForgetpwdForm, ModifyPwdForm, UploadImageForm,UserInfoForm
+from .froms import LoginForm, RegisterForm, ForgetpwdForm, ModifyPwdForm, UploadImageForm, UserInfoForm
 from utils.email_send import send_register_email
 from utils.mixin_utils import LoginRequiredMixin
 
@@ -179,7 +179,6 @@ class UserInfoView(LoginRequiredMixin, View):
             return HttpResponse(json.dumps(user_info_form.errors), content_type='application/json')
 
 
-
 class UploadImageView(LoginRequiredMixin, View):
     '''
     用户头像上传
@@ -254,6 +253,7 @@ class MyCourseView(View):
     '''
     我的课程
     '''
+
     def get(self, request):
         user_courses = UserCourse.objects.filter(user=request.user)
 
@@ -271,7 +271,7 @@ class MyCourseView(View):
 
         user_courses = p.page(page)
         return render(request, 'usercenter-mycourse.html', {
-            'user_courses':user_courses,
+            'user_courses': user_courses,
         })
 
 
@@ -279,30 +279,31 @@ class MyFavOrgVie(View):
     '''
     我的收藏的课程机构
     '''
+
     def get(self, request):
         org_list = []
-        fav_orgs = UserFavorite.objects.filter(user = request.user, fav_type = 2)
+        fav_orgs = UserFavorite.objects.filter(user=request.user, fav_type=2)
         for fav_org in fav_orgs:
             # 取出机构ID
             org_id = fav_org.fav_id
             # 获取这个机构对像
-            org = CourseOrg.objects.get(id = org_id)
+            org = CourseOrg.objects.get(id=org_id)
             org_list.append(org)
 
-            # 对收藏机构进行分页
-            # 尝试获取前台get请求传递过来的page参数
-            # 如果是不合法的配置参数默认返回第一页
-            try:
-                page = request.GET.get('page', 1)
-            except PageNotAnInteger:
-                page = 1
-            # Provide Paginator with the request object for complete querystring generation
-            # 这里指从all_orgs中取出6个来，每页显示6个
-            p = Paginator(org_list, 2, request=request)
-            org_list = p.page(page)
+        # 对收藏机构进行分页
+        # 尝试获取前台get请求传递过来的page参数
+        # 如果是不合法的配置参数默认返回第一页
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+        # Provide Paginator with the request object for complete querystring generation
+        # 这里指从all_orgs中取出6个来，每页显示6个
+        p = Paginator(org_list, 2, request=request)
+        org_list = p.page(page)
 
         return render(request, 'usercenter-fav-org.html', {
-            'org_list':org_list,
+            'org_list': org_list,
         })
 
 
@@ -310,30 +311,31 @@ class MyFavTeacherView(View):
     '''
     我的收藏的授课教师
     '''
+
     def get(self, request):
         teacher_list = []
-        fav_teachers = UserFavorite.objects.filter(user = request.user, fav_type = 3)
+        fav_teachers = UserFavorite.objects.filter(user=request.user, fav_type=3)
         for fav_teacher in fav_teachers:
             # 取出教师ID
             teacher_id = fav_teacher.fav_id
             # 获取这个教师对像
-            teacher = Teacher.objects.get(id = teacher_id)
+            teacher = Teacher.objects.get(id=teacher_id)
             teacher_list.append(teacher)
 
-            # 对收藏教师进行分页
-            # 尝试获取前台get请求传递过来的page参数
-            # 如果是不合法的配置参数默认返回第一页
-            try:
-                page = request.GET.get('page', 1)
-            except PageNotAnInteger:
-                page = 1
-            # Provide Paginator with the request object for complete querystring generation
-            # 这里指从all_orgs中取出6个来，每页显示6个
-            p = Paginator(teacher_list, 2, request=request)
-            teacher_list_page = p.page(page)
+        # 对收藏教师进行分页
+        # 尝试获取前台get请求传递过来的page参数
+        # 如果是不合法的配置参数默认返回第一页
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+        # Provide Paginator with the request object for complete querystring generation
+        # 这里指从all_orgs中取出6个来，每页显示6个
+        p = Paginator(teacher_list, 2, request=request)
+        teacher_list = p.page(page)
 
         return render(request, 'usercenter-fav-teacher.html', {
-            'teacher_list':teacher_list_page,
+            'teacher_list': teacher_list,
         })
 
 
@@ -341,6 +343,7 @@ class MyFavCourseView(View):
     '''
     我的收藏的公开课程
     '''
+
     def get(self, request):
         course_list = []
         fav_courses = UserFavorite.objects.filter(user=request.user, fav_type=1)
@@ -351,17 +354,17 @@ class MyFavCourseView(View):
             course = Course.objects.get(id=course_id)
             course_list.append(course)
 
-            # 对课程进行分页
-            # 尝试获取前台get请求传递过来的page参数
-            # 如果是不合法的配置参数默认返回第一页
-            try:
-                page = request.GET.get('page', 1)
-            except PageNotAnInteger:
-                page = 1
-            # Provide Paginator with the request object for complete querystring generation
-            # 这里指从all_orgs中取出6个来，每页显示6个
-            p = Paginator(course_list, 2, request=request)
-            course_list = p.page(page)
+        # 对课程进行分页
+        # 尝试获取前台get请求传递过来的page参数
+        # 如果是不合法的配置参数默认返回第一页
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+        # Provide Paginator with the request object for complete querystring generation
+        # 这里指从all_orgs中取出6个来，每页显示6个
+        p = Paginator(course_list, 2, request=request)
+        course_list = p.page(page)
 
         return render(request, 'usercenter-fav-course.html', {
             'course_list': course_list,
@@ -372,6 +375,7 @@ class MyMessageView(View):
     '''
     我的消息
     '''
+
     def get(self, request):
         messages = UserMessage.objects.filter(user=request.user.id)
 
@@ -380,7 +384,6 @@ class MyMessageView(View):
         for unread_message in all_unread_messages:
             unread_message.has_read = True
             unread_message.save()
-
 
         # 对消息进行分页
         # 尝试获取前台get请求传递过来的page参数
@@ -394,7 +397,7 @@ class MyMessageView(View):
         p = Paginator(messages, 2, request=request)
         messages = p.page(page)
         return render(request, 'usercenter-message.html', {
-            'messages':messages,
+            'messages': messages,
         })
 
 
@@ -402,6 +405,7 @@ class LogOutView(View):
     '''
     用户登出
     '''
+
     def get(self, request):
         logout(request)
         return HttpResponseRedirect(reverse('index'))
@@ -411,6 +415,7 @@ class IndexView(View):
     '''
     首页
     '''
+
     def get(self, request):
         # 轮播图
         banners = Banner.objects.all().order_by("index")
@@ -422,10 +427,10 @@ class IndexView(View):
         orgs = CourseOrg.objects.all()[:15]
 
         return render(request, 'index.html', {
-            'banners':banners,
-            'banner_courses':banner_courses,
-            'courses':courses,
-            'orgs':orgs,
+            'banners': banners,
+            'banner_courses': banner_courses,
+            'courses': courses,
+            'orgs': orgs,
         })
 
 
