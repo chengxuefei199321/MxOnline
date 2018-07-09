@@ -235,6 +235,7 @@ class UpdateEmailView(LoginRequiredMixin, View):
     '''
     修改邮箱
     '''
+
     def post(self, request):
         email = request.POST.get('email', '')
         code = request.POST.get('code', '')
