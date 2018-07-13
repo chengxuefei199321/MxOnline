@@ -7,6 +7,7 @@ from django.utils.encoding import force_text, smart_text
 from django.utils.html import escape, conditional_escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
+from django.forms.widgets import Media
 from xadmin.plugins.ajax import JsonErrorDict
 from xadmin.sites import site
 from xadmin.util import lookup_field, display_for_field, label_for_field, unquote, boolean_icon

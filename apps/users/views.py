@@ -16,7 +16,7 @@ from .models import UserProfile, EmailVerifyRecord, Banner
 from operation.models import UserCourse, UserFavorite, UserMessage
 from organization.models import CourseOrg, Teacher
 from courses.models import Course
-from .froms import LoginForm, RegisterForm, ForgetpwdForm, ModifyPwdForm, UploadImageForm, UserInfoForm
+from .form import LoginForm, RegisterForm, ForgetpwdForm, ModifyPwdForm, UploadImageForm, UserInfoForm
 from utils.email_send import send_register_email
 from utils.mixin_utils import LoginRequiredMixin
 

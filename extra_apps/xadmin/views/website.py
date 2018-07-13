@@ -8,7 +8,7 @@ from django.http import HttpResponse
 
 from .base import BaseAdminView, filter_hook
 from .dashboard import Dashboard
-from xadmin.forms import AdminAuthenticationForm
+from xadmin.form import AdminAuthenticationForm
 from xadmin.models import UserSettings
 from xadmin.layout import FormHelper
 
