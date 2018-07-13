@@ -237,9 +237,10 @@ class UpdateEmailView(LoginRequiredMixin, View):
 
     def post(self, request):
         email = request.POST.get('email', '')
+        pass
         code = request.POST.get('code', '')
 
-        existed_records = EmailVerifyRecord.objects.filter(email=email, code=code, send_type='update_email')
+        existed_records = EmailVerifyRecord.objects.filter(email=email, send_type='update_email')
         if existed_records:
             user = request.user
             user.email = email

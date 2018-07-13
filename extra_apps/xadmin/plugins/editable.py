@@ -2,7 +2,6 @@ from django import template
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.db import models, transaction
 from django.forms.models import modelform_factory
-from django.forms.widgets import Media
 from django.http import Http404, HttpResponse
 from django.utils.encoding import force_text, smart_text
 from django.utils.html import escape, conditional_escape
